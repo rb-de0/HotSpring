@@ -1,13 +1,42 @@
 import XCTest
 @testable import HotSpring
+@testable import JustHTTPClient
 
 class HotSpringTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        XCTAssertEqual(HotSpring().text, "Hello, World!")
+    
+    struct TestRequest: Request {
+        
+        var base: URL {
+            return URL(string: "https://httpbin.org/get")!
+        }
+        
+        var path: String {
+            return ""
+        }
+        
+        var method: HTTPMethod {
+            return .get
+        }
+        
+        var client: HTTPClient {
+            return JustHTTPClient()
+        }
+        
+        func decodeResponse(_ data: Any) throws -> String {
+            return ""
+        }
     }
-
+    
+    func testExample() {
+        
+        let expectation = self.expectation(description: #function)
+        
+        TestRequest().send { _ in
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
 
     static var allTests = [
         ("testExample", testExample),

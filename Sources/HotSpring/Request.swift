@@ -11,7 +11,7 @@ public protocol Request {
     
     var headers: [String: String]? { get }
     var parameters: [String: Any]? { get }
-    var encoding: ParameterEncoding? { get }
+    var encoding: ParameterEncoding { get }
     
     var client: HTTPClient { get }
     
@@ -29,7 +29,15 @@ public extension Request {
         return nil
     }
     
-    var encoding: ParameterEncoding? {
-        return nil
+    var encoding: ParameterEncoding {
+        return .json
+    }
+}
+
+// MARK: - Send
+public extension Request {
+    
+    func send(completionHandler: @escaping (RequestResult<Self.Response>) -> ()) {
+        client.sendRequest(self, completionHandler: completionHandler)
     }
 }

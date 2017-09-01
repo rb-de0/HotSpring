@@ -9,4 +9,15 @@ public enum HTTPMethod: String {
     case trace = "TRACE"
     case patch = "PATCH"
     case connect = "CONNECT"
+    
+    public var bodyProvidable: Bool {
+        
+        switch self {
+        case .get, .head, .delete:
+            return false
+            
+        default:
+            return true
+        }
+    }
 }
