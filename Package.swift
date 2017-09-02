@@ -9,6 +9,6 @@ let package = Package(
         Target(name: "JustHTTPClient", dependencies: ["HotSpring"])
     ],
     dependencies: [
-        .Package(url: "https://github.com/JustHTTP/Just.git", majorVersion: 0, minor: 5)
+        .Package(url: "https://github.com/JustHTTP/Just.git", majorVersion: 0)
     ]
 )

@@ -45,10 +45,10 @@ public final class JustHTTPClient: HTTPClient {
             json = nil
             data = [:]
         }
-        
+
         Just.request(
             method,
-            URLString: url,
+            url: url,
             params: params,
             data: data,
             json: json,
