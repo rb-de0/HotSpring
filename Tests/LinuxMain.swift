@@ -1,6 +1,6 @@
 import XCTest
-@testable import HotSpringTests
+@testable import JustHTTPClientTests
 
 XCTMain([
-    testCase(HotSpringTests.allTests),
+    testCase(JustHTTPClientTests.allTests),
 ])
