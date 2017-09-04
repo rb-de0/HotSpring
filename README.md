@@ -41,6 +41,9 @@ HTTP clients are not implemented in HotSpring, but we implemented an HTTP client
 The following is a sample.
 
 ```Swift
+import HotSpring
+import JustHTTPClient
+
 enum SampleError: Error {
     case invalidResponse
 }
