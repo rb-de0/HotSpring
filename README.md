@@ -70,10 +70,6 @@ SampleRequest().send {
 }
 ```
 
-## TODO
-
-- [ ] Shared HTTP Client
-
 ## License
 
 HotSpring is released under the MIT License. See the LICENSE file for more info.
