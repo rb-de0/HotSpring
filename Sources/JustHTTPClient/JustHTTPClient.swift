@@ -5,6 +5,8 @@ import Just
 
 public final class JustHTTPClient: HTTPClient {
     
+    public init() {}
+    
     public func sendRequest<T>(_ request: T, completionHandler: @escaping (RequestResult<T.Response>) -> ()) where T : Request {
         
         func handleResponse(_ response: Data?) throws -> T.Response {
