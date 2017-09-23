@@ -13,7 +13,7 @@ HotSpring also works on Linux.
 
 ### Swift
 
-- Swift 3.1
+- Swift 3.1 or later
 
 ### macOS
 
@@ -25,12 +25,20 @@ HotSpring also works on Linux.
 
 ## Installation
 
-### Swift Package Manager
-
 Add the following to your dependencies in Package.swift.
+
+### Swift Package Manager v3
+
 
 ```Swift
 .Package(url: "https://github.com/rb-de0/HotSpring.git", majorVersion: 0)
+```
+
+### Swift Package Manager v4
+
+
+```Swift
+.package(url: "https://github.com/rb-de0/HotSpring.git", from: "0.1.0")
 ```
 
 ## Usage
