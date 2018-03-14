@@ -1,8 +1,8 @@
 
 public final class RequestContext {
     
-    var headers: [String : String]?
-    var parameters: [String : Any]?
+    public var headers: [String : String]?
+    public var parameters: [String : Any]?
     
     init<T: Request>(_ request: T) {
         headers = request.headers
