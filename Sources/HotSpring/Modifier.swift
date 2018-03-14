@@ -10,6 +10,6 @@ public final class RequestContext {
     }
 }
 
-protocol Modifier {
+public protocol Modifier {
     func modify(context: RequestContext)
 }

@@ -5,17 +5,19 @@ public final class Executor {
         private var _client: HTTPClient?
         private var _modifiers = [Modifier]()
         
-        func addHTTPClient(_ client: HTTPClient) -> Self {
+        public init() {}
+        
+        public func addHTTPClient(_ client: HTTPClient) -> Self {
             _client = client
             return self
         }
         
-        func addModifier(_ modifier: Modifier) -> Self {
+        public func addModifier(_ modifier: Modifier) -> Self {
             _modifiers.append(modifier)
             return self
         }
         
-        func build() -> Executor {
+        public func build() -> Executor {
             
             guard let client = _client else {
                 fatalError("must be add http client.")
