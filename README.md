@@ -13,7 +13,7 @@ HotSpring also works on Linux.
 
 ### Swift
 
-- Swift 3.1 or later
+- Swift 4.0.3
 
 ### macOS
 
@@ -38,7 +38,7 @@ Add the following to your dependencies in Package.swift.
 
 
 ```Swift
-.package(url: "https://github.com/rb-de0/HotSpring.git", from: "0.1.0")
+.package(url: "https://github.com/rb-de0/HotSpring.git", from: "0.3.0")
 ```
 
 ## Usage
@@ -61,7 +61,6 @@ struct SampleRequest: Request {
     let base = URL(string: "https://httpbin.org/get")!
     let path = ""
     let method = HTTPMethod.get
-    let client: HTTPClient = JustHTTPClient()
     
     func decodeResponse(_ data: Any) throws -> Data {
         
@@ -73,13 +72,14 @@ struct SampleRequest: Request {
     }
 }
 
-SampleRequest().send {
+let executor = Executor.Builder().addHTTPClient(JustHTTPClient()).build()
+executor.execute(request) {
     print($0.value, $0.error)
 }
+
+
 ```
 
 ## License
 
 HotSpring is released under the MIT License. See the LICENSE file for more info.
-
-
