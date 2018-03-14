@@ -29,10 +29,6 @@ class JustHTTPClientTests: XCTestCase {
             self.encoding = encoding
         }
         
-        var client: HTTPClient {
-            return JustHTTPClient()
-        }
-        
         func decodeResponse(_ data: Any) throws -> [String: Any] {
 
             guard let data = data as? Data else {
@@ -63,10 +59,13 @@ class JustHTTPClientTests: XCTestCase {
         
         let expectation = self.expectation(description: #function)
         let base = URL(string: "https://httpbin.org/get")!
+        let executor = Executor.Builder().addHTTPClient(JustHTTPClient()).build()
         
         var response: [String: Any]?
         
-        TestRequest(base: base, path: "", method: .get, parameters: nil, headers: nil).send { result in
+        let request = TestRequest(base: base, path: "", method: .get, parameters: nil, headers: nil)
+        
+        executor.execute(request) { result in
             response = result.value
             expectation.fulfill()
         }
@@ -80,10 +79,13 @@ class JustHTTPClientTests: XCTestCase {
         
         let expectation = self.expectation(description: #function)
         let base = URL(string: "https://httpbin.org/get?value=10")!
+        let executor = Executor.Builder().addHTTPClient(JustHTTPClient()).build()
         
         var response: [String: Any]?
         
-        TestRequest(base: base, path: "", method: .get, parameters: nil, headers: nil).send { result in
+        let request = TestRequest(base: base, path: "", method: .get, parameters: nil, headers: nil)
+
+        executor.execute(request) { result in
             response = result.value
             expectation.fulfill()
         }
@@ -97,10 +99,13 @@ class JustHTTPClientTests: XCTestCase {
         
         let expectation = self.expectation(description: #function)
         let base = URL(string: "https://httpbin.org/get?offset=1")!
+        let executor = Executor.Builder().addHTTPClient(JustHTTPClient()).build()
         
         var response: [String: Any]?
         
-        TestRequest(base: base, path: "", method: .get, parameters: ["limit": 20], headers: nil).send { result in
+        let request = TestRequest(base: base, path: "", method: .get, parameters: ["limit": 20], headers: nil)
+        
+        executor.execute(request) { result in
             response = result.value
             expectation.fulfill()
         }
@@ -115,10 +120,13 @@ class JustHTTPClientTests: XCTestCase {
         
         let expectation = self.expectation(description: #function)
         let base = URL(string: "https://httpbin.org/post")!
+        let executor = Executor.Builder().addHTTPClient(JustHTTPClient()).build()
         
         var response: [String: Any]?
         
-        TestRequest(base: base, path: "", method: .post, parameters: ["value": 10], headers: nil).send { result in
+        let request = TestRequest(base: base, path: "", method: .post, parameters: ["value": 10], headers: nil)
+        
+        executor.execute(request) { result in
             response = result.value
             expectation.fulfill()
         }
@@ -133,10 +141,13 @@ class JustHTTPClientTests: XCTestCase {
         
         let expectation = self.expectation(description: #function)
         let base = URL(string: "https://httpbin.org/post")!
+        let executor = Executor.Builder().addHTTPClient(JustHTTPClient()).build()
         
         var response: [String: Any]?
         
-        TestRequest(base: base, path: "", method: .post, parameters: ["value": 10], headers: nil, encoding: .url).send { result in
+        let request = TestRequest(base: base, path: "", method: .post, parameters: ["value": 10], headers: nil, encoding: .url)
+        
+        executor.execute(request) { result in
             response = result.value
             expectation.fulfill()
         }
@@ -145,5 +156,33 @@ class JustHTTPClientTests: XCTestCase {
         
         XCTAssertEqual((response?["form"] as? [String: Any])?["value"] as? String, "10")
         XCTAssertEqual((response?["headers"] as? [String: Any])?["Content-Type"] as? String, "application/x-www-form-urlencoded")
+    }
+    
+    func testModifier() {
+    
+        let expectation = self.expectation(description: #function)
+        let base = URL(string: "https://httpbin.org/post")!
+        
+        struct TestModifier: Modifier {
+            func modify(context: RequestContext) {
+                context.parameters?["value"] = 100
+            }
+        }
+        
+        let executor = Executor.Builder().addHTTPClient(JustHTTPClient()).addModifier(TestModifier()).build()
+        
+        var response: [String: Any]?
+        
+        let request = TestRequest(base: base, path: "", method: .post, parameters: ["value": 10], headers: nil)
+        
+        executor.execute(request) { result in
+            response = result.value
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+        
+        XCTAssertEqual((response?["json"] as? [String: Any])?["value"] as? Int, 100)
+        XCTAssertEqual((response?["headers"] as? [String: Any])?["Content-Type"] as? String, "application/json")
     }
 }
